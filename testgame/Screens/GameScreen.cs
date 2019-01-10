@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using GameSystemServices;
+using System.Threading;
 
 namespace testgame
 {
@@ -29,6 +30,7 @@ namespace testgame
         List<int> monSizeList = new List<int>();
         List<int> monSpeedList = new List<int>();
         SolidBrush monBrush = new SolidBrush(Color.Black);
+        
 
         public GameScreen()
         {
@@ -45,7 +47,7 @@ namespace testgame
             heroSize = 20;
             heroSpeed = 4;
 
-            monXList.Add(300);
+            monXList.Add(394);
             monYList.Add(20);
             monSizeList.Add(15);
             monSpeedList.Add(1);
@@ -55,7 +57,7 @@ namespace testgame
             monSizeList.Add(15);
             monSpeedList.Add(1);
 
-            monXList.Add(300);
+            monXList.Add(434);
             monYList.Add(219);
             monSizeList.Add(15);
             monSpeedList.Add(1);
@@ -140,22 +142,8 @@ namespace testgame
         private void gameTimer_Tick(object sender, EventArgs e)
         {
             //TODO move main character 
-            if (leftArrowDown == true)
-            {
-                heroX = heroX - heroSpeed;
-            }
-            if (downArrowDown == true)
-            {
-                heroY = heroY + heroSpeed;
-            }
-            if (rightArrowDown == true)
-            {
-                heroX = heroX + heroSpeed;
-            }
-            if (upArrowDown == true)
-            {
-                heroY = heroY - heroSpeed;
-            }
+            #region player movements
+
 
             if (leftArrowDown == true)
             {
@@ -197,12 +185,26 @@ namespace testgame
                 }
             }
 
+            #endregion
+
             //TODO move npc characters
             for (int i = 0; i < monXList.Count; i++)
             {
                 if (monXList[i] > 50)
                 {
                     monXList[i] = monXList[i] - monSpeedList[i];
+                }
+                else
+                {
+                    gameTimer.Enabled = false;
+                    Thread.Sleep(1000);
+
+                    Font drawFont = new Font("Arial", 30, FontStyle.Bold);
+                    SolidBrush drawBrush = new SolidBrush(Color.Black);
+                    Graphics g = this.CreateGraphics();
+                    g.DrawString("YOU LOSE", drawFont, drawBrush, this.Width / 4, this.Height / 4);
+                    Thread.Sleep(4000);
+                    MainForm.ChangeScreen(this, "MenuScreen");
                 }
             }
 
@@ -220,14 +222,13 @@ namespace testgame
             //draw rectangle to screen
             e.Graphics.FillRectangle(heroBrush, heroX, heroY, heroSize, heroSize);
             e.Graphics.DrawLine(linePen, 50, 0, 50, this.Height);
-            e.Graphics.DrawRectangle(monBrush, 10, 1, 15, 4);
 
             for (int i = 0; i < monXList.Count; i++)
             {
-                if (monXList[i] > 50)
-                {
+                //if (monXList[i] > 50)
+                //{
                     e.Graphics.FillRectangle(monBrush, monXList[i], monYList[i], monSizeList[i], monSizeList[i]);
-                }
+                //}
             }
             
         }
