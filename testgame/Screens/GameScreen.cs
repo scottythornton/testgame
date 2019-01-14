@@ -30,6 +30,8 @@ namespace testgame
         List<int> monSizeList = new List<int>();
         List<int> monSpeedList = new List<int>();
         SolidBrush monBrush = new SolidBrush(Color.Black);
+        List<Rectangle> monRectList = new List<Rectangle>();
+        List<Rectangle> bulletRectList = new List<Rectangle>();
         
 
         public GameScreen()
@@ -51,16 +53,22 @@ namespace testgame
             monYList.Add(20);
             monSizeList.Add(15);
             monSpeedList.Add(1);
+            Rectangle R = new Rectangle(394, 20, 15, 15);
+            monRectList.Add(R);
 
             monXList.Add(300);
             monYList.Add(98);
             monSizeList.Add(15);
             monSpeedList.Add(1);
+            Rectangle R1 = new Rectangle(300, 98, 15, 15);
+            monRectList.Add(R1);
 
             monXList.Add(434);
             monYList.Add(219);
             monSizeList.Add(15);
             monSpeedList.Add(1);
+            Rectangle R2 = new Rectangle(434, 219, 15, 15);
+            monRectList.Add(R2);
         }
 
         private void GameScreen_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -185,6 +193,12 @@ namespace testgame
                 }
             }
 
+            if (spaceDown == true)
+            {
+                
+            }
+           
+
             #endregion
 
             //TODO move npc characters
@@ -230,7 +244,8 @@ namespace testgame
                     e.Graphics.FillRectangle(monBrush, monXList[i], monYList[i], monSizeList[i], monSizeList[i]);
                 //}
             }
-            
+
+            SolidBrush bulletBrush = new SolidBrush(Color.Black);
         }
     }
 
