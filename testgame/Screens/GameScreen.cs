@@ -21,17 +21,18 @@ namespace testgame
         Boolean aDown, sDown, dDown, wDown, cDown, vDown, xDown, zDown;
 
         //TODO create your global game variables here
-        int heroX, heroY, heroSize, heroSpeed, monX, monY, monSize, monSpeed;
+        int heroX, heroY, heroSize, heroSpeed, monX, monY, monSize;
         SolidBrush heroBrush = new SolidBrush(Color.Black);
         Pen linePen = new Pen(Color.Black);
+        SolidBrush bulletBrush = new SolidBrush(Color.Black);
 
-        List<int> monXList = new List<int>();
-        List<int> monYList = new List<int>();
-        List<int> monSizeList = new List<int>();
-        List<int> monSpeedList = new List<int>();
         SolidBrush monBrush = new SolidBrush(Color.Black);
         List<Rectangle> monRectList = new List<Rectangle>();
-        List<Rectangle> bulletRectList = new List<Rectangle>();
+        List<Rectangle> bulletList = new List<Rectangle>();
+
+        int bulletSpeed = 10;
+        int monSpeed = 1;
+        int shootCool = 0;
         
 
         public GameScreen()
@@ -49,24 +50,12 @@ namespace testgame
             heroSize = 20;
             heroSpeed = 4;
 
-            monXList.Add(394);
-            monYList.Add(20);
-            monSizeList.Add(15);
-            monSpeedList.Add(1);
             Rectangle R = new Rectangle(394, 20, 15, 15);
             monRectList.Add(R);
 
-            monXList.Add(300);
-            monYList.Add(98);
-            monSizeList.Add(15);
-            monSpeedList.Add(1);
             Rectangle R1 = new Rectangle(300, 98, 15, 15);
             monRectList.Add(R1);
 
-            monXList.Add(434);
-            monYList.Add(219);
-            monSizeList.Add(15);
-            monSpeedList.Add(1);
             Rectangle R2 = new Rectangle(434, 219, 15, 15);
             monRectList.Add(R2);
         }
@@ -139,6 +128,9 @@ namespace testgame
                 case Keys.Up:
                     upArrowDown = false;
                     break;
+                case Keys.Space:
+                    spaceDown = false;
+                    break;
             }
         }
 
@@ -195,18 +187,36 @@ namespace testgame
 
             if (spaceDown == true)
             {
-                
+                if (shootCool == 0)
+                {
+                    Rectangle p = new Rectangle(heroX, heroY, 15, 10);
+                    bulletList.Add(p);
+                    shootCool = 10;
+                }
+
             }
            
 
             #endregion
 
-            //TODO move npc characters
-            for (int i = 0; i < monXList.Count; i++)
+            if(shootCool > 0)
             {
-                if (monXList[i] > 50)
+                shootCool--;
+            }
+
+            for (int i = 0; i < bulletList.Count; i++)
+            {
+                Rectangle q = new Rectangle(bulletList[i].X + bulletSpeed, bulletList[i].Y, bulletList[i].Width, bulletList[i].Height);
+                bulletList[i] = q;
+            }
+
+            //TODO move npc characters
+            for (int i = 0; i < monRectList.Count; i++)
+            {
+                if (monRectList[i].X > 50)
                 {
-                    monXList[i] = monXList[i] - monSpeedList[i];
+                    Rectangle r = new Rectangle(monRectList[i].X - monSpeed, monRectList[i].Y, monRectList[i].Width, monRectList[i].Height);
+                    monRectList[i] = r;
                 }
                 else
                 {
@@ -222,7 +232,19 @@ namespace testgame
                 }
             }
 
-            //TODO collisions checks 
+            //TODO collisions checks
+
+            for(int i = 0; i < monRectList.Count(); i++)
+            {
+                foreach(Rectangle p in bulletList)
+                {
+                    if (monRectList[i].IntersectsWith(p))
+                    {
+                        monRectList.Remove(monRectList[i]);
+                        i--;
+                    }
+                }
+            }
 
 
             //calls the GameScreen_Paint method to draw the screen.
@@ -236,16 +258,18 @@ namespace testgame
             //draw rectangle to screen
             e.Graphics.FillRectangle(heroBrush, heroX, heroY, heroSize, heroSize);
             e.Graphics.DrawLine(linePen, 50, 0, 50, this.Height);
+            e.Graphics.FillRectangle(bulletBrush, 2, 2, 2, 2);
 
-            for (int i = 0; i < monXList.Count; i++)
+            for (int i = 0; i < monRectList.Count; i++)
+            {        
+                e.Graphics.FillRectangle(monBrush, monRectList[i].X, monRectList[i].Y, monRectList[i].Width, monRectList[i].Height);
+            }
+            foreach(Rectangle r in bulletList)
             {
-                //if (monXList[i] > 50)
-                //{
-                    e.Graphics.FillRectangle(monBrush, monXList[i], monYList[i], monSizeList[i], monSizeList[i]);
-                //}
+                e.Graphics.FillRectangle(monBrush, r.X, r.Y, r.Width, r.Height);
             }
 
-            SolidBrush bulletBrush = new SolidBrush(Color.Black);
+
         }
     }
 
