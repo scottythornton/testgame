@@ -25,6 +25,7 @@ namespace testgame
         SolidBrush heroBrush = new SolidBrush(Color.Black);
         Pen linePen = new Pen(Color.Black);
         SolidBrush bulletBrush = new SolidBrush(Color.Black);
+        Font drawFont = new Font("Arial", 16, FontStyle.Bold);
 
         SolidBrush monBrush = new SolidBrush(Color.Black);
         List<Rectangle> monRectList = new List<Rectangle>();
@@ -33,7 +34,12 @@ namespace testgame
         int bulletSpeed = 10;
         int monSpeed = 1;
         int shootCool = 0;
-        
+        int startTimer = 0;
+        int level = 1;
+        int xValue;
+
+        Random randGen = new Random();
+
 
         public GameScreen()
         {
@@ -53,7 +59,7 @@ namespace testgame
             Rectangle R = new Rectangle(394, 20, 15, 15);
             monRectList.Add(R);
 
-            Rectangle R1 = new Rectangle(300, 98, 15, 15);
+            Rectangle R1 = new Rectangle(327, 98, 15, 15);
             monRectList.Add(R1);
 
             Rectangle R2 = new Rectangle(434, 219, 15, 15);
@@ -141,136 +147,179 @@ namespace testgame
         /// </summary>
         private void gameTimer_Tick(object sender, EventArgs e)
         {
-            //TODO move main character 
-            #region player movements
-
-
-            if (leftArrowDown == true)
+            if (startTimer > 50)
             {
-                heroX = heroX - heroSpeed;
+                //TODO move main character 
+                #region player movements
 
-                if (heroX < 0)
+
+                if (leftArrowDown == true)
                 {
-                    heroX = 0;
-                }
-            }
+                    heroX = heroX - heroSpeed;
 
-            if (rightArrowDown == true)
-            {
-                heroX = heroX + heroSpeed;
-
-                if (heroX > 50 - heroSize)
-                {
-                    heroX = 50 - heroSize;
-                }
-            }
-
-            if (downArrowDown == true)
-            {
-                heroY = heroY + heroSpeed;
-
-                if (heroY > this.Height - heroSize)
-                {
-                    heroY = this.Height - heroSize;
-                }
-            }
-
-            if (upArrowDown == true)
-            {
-                heroY = heroY - heroSpeed;
-
-                if (heroY < 0)
-                {
-                    heroY = 0;
-                }
-            }
-
-            if (spaceDown == true)
-            {
-                if (shootCool == 0)
-                {
-                    Rectangle p = new Rectangle(heroX, heroY, 15, 10);
-                    bulletList.Add(p);
-                    shootCool = 10;
-                }
-
-            }
-           
-
-            #endregion
-
-            if(shootCool > 0)
-            {
-                shootCool--;
-            }
-
-            for (int i = 0; i < bulletList.Count; i++)
-            {
-                Rectangle q = new Rectangle(bulletList[i].X + bulletSpeed, bulletList[i].Y, bulletList[i].Width, bulletList[i].Height);
-                bulletList[i] = q;
-            }
-
-            //TODO move npc characters
-            for (int i = 0; i < monRectList.Count; i++)
-            {
-                if (monRectList[i].X > 50)
-                {
-                    Rectangle r = new Rectangle(monRectList[i].X - monSpeed, monRectList[i].Y, monRectList[i].Width, monRectList[i].Height);
-                    monRectList[i] = r;
-                }
-                else
-                {
-                    gameTimer.Enabled = false;
-                    Thread.Sleep(1000);
-
-                    Font drawFont = new Font("Arial", 30, FontStyle.Bold);
-                    SolidBrush drawBrush = new SolidBrush(Color.Black);
-                    Graphics g = this.CreateGraphics();
-                    g.DrawString("YOU LOSE", drawFont, drawBrush, this.Width / 4, this.Height / 4);
-                    Thread.Sleep(4000);
-                    MainForm.ChangeScreen(this, "MenuScreen");
-                }
-            }
-
-            //TODO collisions checks
-
-            for(int i = 0; i < monRectList.Count(); i++)
-            {
-                foreach(Rectangle p in bulletList)
-                {
-                    if (monRectList[i].IntersectsWith(p))
+                    if (heroX < 0)
                     {
-                        monRectList.Remove(monRectList[i]);
-                        i--;
+                        heroX = 0;
                     }
                 }
+
+                if (rightArrowDown == true)
+                {
+                    heroX = heroX + heroSpeed;
+
+                    if (heroX > 50 - heroSize)
+                    {
+                        heroX = 50 - heroSize;
+                    }
+                }
+
+                if (downArrowDown == true)
+                {
+                    heroY = heroY + heroSpeed;
+
+                    if (heroY > this.Height - heroSize)
+                    {
+                        heroY = this.Height - heroSize;
+                    }
+                }
+
+                if (upArrowDown == true)
+                {
+                    heroY = heroY - heroSpeed;
+
+                    if (heroY < 0)
+                    {
+                        heroY = 0;
+                    }
+                }
+
+                if (spaceDown == true)
+                {
+                    if (shootCool == 0)
+                    {
+                        Rectangle p = new Rectangle(heroX, heroY, 15, 10);
+                        bulletList.Add(p);
+                        shootCool = 10;
+                    }
+
+                }
+
+
+                #endregion
+
+                if (shootCool > 0)
+                {
+                    shootCool--;
+                }
+
+                for (int i = 0; i < bulletList.Count; i++)
+                {
+                    Rectangle q = new Rectangle(bulletList[i].X + bulletSpeed, bulletList[i].Y, bulletList[i].Width, bulletList[i].Height);
+                    bulletList[i] = q;
+                }
+
+                //TODO move npc characters
+                for (int i = 0; i < monRectList.Count; i++)
+                {
+                    if (monRectList[i].X > 50)
+                    {
+                        Rectangle r = new Rectangle(monRectList[i].X - monSpeed, monRectList[i].Y, monRectList[i].Width, monRectList[i].Height);
+                        monRectList[i] = r;
+                    }
+                    else
+                    {
+                        gameTimer.Enabled = false;
+                        Thread.Sleep(1000);
+
+                        Font drawFont = new Font("Arial", 30, FontStyle.Bold);
+                        SolidBrush drawBrush = new SolidBrush(Color.Black);
+                        Graphics g = this.CreateGraphics();
+                        g.DrawString("YOU LOSE", drawFont, drawBrush, this.Width / 4, this.Height / 4);
+                        Thread.Sleep(4000);
+                        MainForm.ChangeScreen(this, "MenuScreen");
+                    }
+                }
+
+                //TODO collisions checks
+
+                bool monRemoved = false;
+                for (int i = 0; i < monRectList.Count(); i++)
+                {
+                    if (monRemoved)
+                    {
+                        i--;
+                        monRemoved = false;
+                    }
+                    foreach (Rectangle p in bulletList)
+                    {
+                        if (monRectList[i].IntersectsWith(p))
+                        {
+                            monRectList.Remove(monRectList[i]);
+                            //i--;
+                            monRemoved = true;
+                            break;
+                        }
+                    }
+                }
+
+
+                //calls the GameScreen_Paint method to draw the screen.
+                if (monRectList.Count < 1)
+                {
+                    level++;
+                    startTimer = 0;
+                    //create some more monsters
+                    xValue = randGen.Next(400, 500);
+                    Rectangle R = new Rectangle (xValue , 20, 15, 15);
+                    monRectList.Add(R);
+
+                    xValue = randGen.Next(400, 500);
+                    Rectangle R1 = new Rectangle(xValue, 98, 15, 15);
+                    monRectList.Add(R1);
+
+                    xValue = randGen.Next(400, 500);
+                    Rectangle R2 = new Rectangle(xValue, 219, 15, 15);
+                    monRectList.Add(R2);
+
+                    monSpeed = monSpeed + 1;
+                }
             }
-
-
-            //calls the GameScreen_Paint method to draw the screen.
+            else
+            {
+                startTimer++;
+            }
             Refresh();
         }
-
 
         //Everything that is to be drawn on the screen should be done here
         private void GameScreen_Paint(object sender, PaintEventArgs e)
         {
-            //draw rectangle to screen
-            e.Graphics.FillRectangle(heroBrush, heroX, heroY, heroSize, heroSize);
-            e.Graphics.DrawLine(linePen, 50, 0, 50, this.Height);
-            e.Graphics.FillRectangle(bulletBrush, 2, 2, 2, 2);
-
-            for (int i = 0; i < monRectList.Count; i++)
-            {        
-                e.Graphics.FillRectangle(monBrush, monRectList[i].X, monRectList[i].Y, monRectList[i].Width, monRectList[i].Height);
-            }
-            foreach(Rectangle r in bulletList)
+            if (startTimer > 50)
             {
-                e.Graphics.FillRectangle(monBrush, r.X, r.Y, r.Width, r.Height);
+                //draw rectangle to screen
+                e.Graphics.FillRectangle(heroBrush, heroX, heroY, heroSize, heroSize);
+                e.Graphics.DrawLine(linePen, 50, 0, 50, this.Height);
+
+                foreach (Rectangle r in bulletList)
+                {
+                    e.Graphics.FillRectangle(monBrush, r.X, r.Y, r.Width, r.Height);
+                }
+
+                for (int i = 0; i < monRectList.Count; i++)
+                {
+                    e.Graphics.FillRectangle(monBrush, monRectList[i].X, monRectList[i].Y, monRectList[i].Width, monRectList[i].Height);
+                }
+
             }
-
-
+            else
+            {
+                e.Graphics.FillRectangle(heroBrush, heroX, heroY, heroSize, heroSize);
+                e.Graphics.DrawLine(linePen, 50, 0, 50, this.Height);
+                e.Graphics.DrawString("Level : " + level, drawFont, heroBrush, this.Width / 2 - 50, this.Height / 2 - 50);
+            }
         }
     }
 
+
 }
+
