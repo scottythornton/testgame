@@ -25,7 +25,9 @@ namespace testgame
         SolidBrush heroBrush = new SolidBrush(Color.Black);
         Pen linePen = new Pen(Color.Black);
         SolidBrush bulletBrush = new SolidBrush(Color.Black);
+        SolidBrush scoreBrush = new SolidBrush(Color.Black);
         Font drawFont = new Font("Arial", 16, FontStyle.Bold);
+        Font scoreFont = new Font("Arial", 8, FontStyle.Bold);
 
         SolidBrush monBrush = new SolidBrush(Color.Black);
         List<Rectangle> monRectList = new List<Rectangle>();
@@ -37,6 +39,8 @@ namespace testgame
         int startTimer = 0;
         int level = 1;
         int xValue;
+        int yValue;
+        int score = 0;
 
         Random randGen = new Random();
 
@@ -54,15 +58,21 @@ namespace testgame
             heroX = 25;
             heroY = this.Height / 2;
             heroSize = 20;
-            heroSpeed = 4;
+            heroSpeed = 6;
 
-            Rectangle R = new Rectangle(394, 20, 15, 15);
+            xValue = randGen.Next(400, 550);
+            yValue = randGen.Next(0, this.Height - 15);
+            Rectangle R = new Rectangle(xValue, yValue, 15, 15);
             monRectList.Add(R);
 
-            Rectangle R1 = new Rectangle(327, 98, 15, 15);
+            xValue = randGen.Next(400, 550);
+            yValue = randGen.Next(0, this.Height - 15);
+            Rectangle R1 = new Rectangle(xValue, yValue, 15, 15);
             monRectList.Add(R1);
 
-            Rectangle R2 = new Rectangle(434, 219, 15, 15);
+            xValue = randGen.Next(400, 550);
+            yValue = randGen.Next(0, this.Height - 15);
+            Rectangle R2 = new Rectangle(xValue, yValue, 15, 15);
             monRectList.Add(R2);
         }
 
@@ -255,8 +265,8 @@ namespace testgame
                         if (monRectList[i].IntersectsWith(p))
                         {
                             monRectList.Remove(monRectList[i]);
-                            //i--;
                             monRemoved = true;
+                            score++;
                             break;
                         }
                     }
@@ -270,15 +280,18 @@ namespace testgame
                     startTimer = 0;
                     //create some more monsters
                     xValue = randGen.Next(400, 500);
-                    Rectangle R = new Rectangle (xValue , 20, 15, 15);
+                    yValue = randGen.Next(0, this.Height - 15);
+                    Rectangle R = new Rectangle (xValue , yValue, 15, 15);
                     monRectList.Add(R);
 
                     xValue = randGen.Next(400, 500);
-                    Rectangle R1 = new Rectangle(xValue, 98, 15, 15);
+                    yValue = randGen.Next(0, this.Height - 15);
+                    Rectangle R1 = new Rectangle(xValue, yValue, 15, 15);
                     monRectList.Add(R1);
 
                     xValue = randGen.Next(400, 500);
-                    Rectangle R2 = new Rectangle(xValue, 219, 15, 15);
+                    yValue = randGen.Next(0, this.Height - 15);
+                    Rectangle R2 = new Rectangle(xValue, yValue, 15, 15);
                     monRectList.Add(R2);
 
                     monSpeed = monSpeed + 1;
@@ -299,6 +312,7 @@ namespace testgame
                 //draw rectangle to screen
                 e.Graphics.FillRectangle(heroBrush, heroX, heroY, heroSize, heroSize);
                 e.Graphics.DrawLine(linePen, 50, 0, 50, this.Height);
+                e.Graphics.DrawString("Score: " + score, scoreFont, scoreBrush, 1, 10);
 
                 foreach (Rectangle r in bulletList)
                 {
@@ -315,7 +329,8 @@ namespace testgame
             {
                 e.Graphics.FillRectangle(heroBrush, heroX, heroY, heroSize, heroSize);
                 e.Graphics.DrawLine(linePen, 50, 0, 50, this.Height);
-                e.Graphics.DrawString("Level : " + level, drawFont, heroBrush, this.Width / 2 - 50, this.Height / 2 - 50);
+                e.Graphics.DrawString("Level : " + level, drawFont, heroBrush, this.Width / 2 - 45, this.Height / 2 - 30);
+                e.Graphics.DrawString("Score: " + score, scoreFont, scoreBrush, 1, 10);
             }
         }
     }
