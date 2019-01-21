@@ -27,7 +27,7 @@ namespace testgame
         SolidBrush bulletBrush = new SolidBrush(Color.Black);
         SolidBrush scoreBrush = new SolidBrush(Color.Black);
         Font drawFont = new Font("Arial", 16, FontStyle.Bold);
-        Font scoreFont = new Font("Arial", 8, FontStyle.Bold);
+        Font scoreFont = new Font("Arial", 8, FontStyle.Bold);          
 
         SolidBrush monBrush = new SolidBrush(Color.Black);
         List<Rectangle> monRectList = new List<Rectangle>();
@@ -330,6 +330,8 @@ namespace testgame
                 e.Graphics.FillRectangle(heroBrush, heroX, heroY, heroSize, heroSize);
                 e.Graphics.DrawLine(linePen, 50, 0, 50, this.Height);
                 e.Graphics.DrawString("Level : " + level, drawFont, heroBrush, this.Width / 2 - 45, this.Height / 2 - 30);
+                e.Graphics.DrawString("Arrow Keys : Move" +
+                    "\nSpace Bar : Shoot", drawFont, heroBrush, this.Width / 2 - 65, this.Height / 2 + 40);
                 e.Graphics.DrawString("Score: " + score, scoreFont, scoreBrush, 1, 10);
             }
         }
