@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using GameSystemServices;
 using System.Threading;
+using System.Media;
 
 namespace testgame
 {
@@ -43,6 +44,7 @@ namespace testgame
         int score = 0;
 
         Random randGen = new Random();
+        SoundPlayer player = new SoundPlayer(Properties.Resources.bullet);
 
 
         public GameScreen()
@@ -226,6 +228,7 @@ namespace testgame
                 {
                     Rectangle q = new Rectangle(bulletList[i].X + bulletSpeed, bulletList[i].Y, bulletList[i].Width, bulletList[i].Height);
                     bulletList[i] = q;
+                    player.Play(); 
                 }
 
                 //TODO move npc characters
@@ -253,6 +256,7 @@ namespace testgame
                 //TODO collisions checks
 
                 bool monRemoved = false;
+                bool bulletRemoved = false;
                 for (int i = 0; i < monRectList.Count(); i++)
                 {
                     if (monRemoved)
@@ -260,12 +264,19 @@ namespace testgame
                         i--;
                         monRemoved = false;
                     }
+                    if (bulletRemoved)
+                    {
+                        i--;
+                        bulletRemoved = false;
+                    }
                     foreach (Rectangle p in bulletList)
                     {
                         if (monRectList[i].IntersectsWith(p))
                         {
                             monRectList.Remove(monRectList[i]);
                             monRemoved = true;
+                            bulletList.Remove(bulletList[i]);
+                            bulletRemoved = true;
                             score++;
                             break;
                         }
@@ -330,9 +341,13 @@ namespace testgame
                 e.Graphics.FillRectangle(heroBrush, heroX, heroY, heroSize, heroSize);
                 e.Graphics.DrawLine(linePen, 50, 0, 50, this.Height);
                 e.Graphics.DrawString("Level : " + level, drawFont, heroBrush, this.Width / 2 - 45, this.Height / 2 - 30);
+                e.Graphics.DrawString("Score: " + score, scoreFont, scoreBrush, 1, 10);
+            }
+
+            if (startTimer < 50 && level == 1)
+            {
                 e.Graphics.DrawString("Arrow Keys : Move" +
                     "\nSpace Bar : Shoot", drawFont, heroBrush, this.Width / 2 - 65, this.Height / 2 + 40);
-                e.Graphics.DrawString("Score: " + score, scoreFont, scoreBrush, 1, 10);
             }
         }
     }
