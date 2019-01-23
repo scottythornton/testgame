@@ -151,5 +151,11 @@
   <ItemGroup>
     <None Include="Resources\bullet.wav" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\fortnite default.jpeg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\shrek monsters.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

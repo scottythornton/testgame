@@ -212,6 +212,7 @@ namespace testgame
                         Rectangle p = new Rectangle(heroX, heroY, 15, 10);
                         bulletList.Add(p);
                         shootCool = 10;
+                        player.Play();
                     }
 
                 }
@@ -228,7 +229,6 @@ namespace testgame
                 {
                     Rectangle q = new Rectangle(bulletList[i].X + bulletSpeed, bulletList[i].Y, bulletList[i].Width, bulletList[i].Height);
                     bulletList[i] = q;
-                    player.Play(); 
                 }
 
                 //TODO move npc characters
@@ -257,25 +257,16 @@ namespace testgame
 
                 bool monRemoved = false;
                 bool bulletRemoved = false;
+
                 for (int i = 0; i < monRectList.Count(); i++)
-                {
-                    if (monRemoved)
+                { 
+                    for (int j = 0; j < bulletList.Count; j++)
                     {
-                        i--;
-                        monRemoved = false;
-                    }
-                    if (bulletRemoved)
-                    {
-                        i--;
-                        bulletRemoved = false;
-                    }
-                    foreach (Rectangle p in bulletList)
-                    {
-                        if (monRectList[i].IntersectsWith(p))
+                        if (monRectList[i].IntersectsWith(bulletList[j]))
                         {
                             monRectList.Remove(monRectList[i]);
                             monRemoved = true;
-                            bulletList.Remove(bulletList[i]);
+                            bulletList.Remove(bulletList[j]);
                             bulletRemoved = true;
                             score++;
                             break;
@@ -332,7 +323,7 @@ namespace testgame
 
                 for (int i = 0; i < monRectList.Count; i++)
                 {
-                    e.Graphics.FillRectangle(monBrush, monRectList[i].X, monRectList[i].Y, monRectList[i].Width, monRectList[i].Height);
+                    e.Graphics.DrawImage(Properties.Resources.shrek_monsters, monRectList[i].X, monRectList[i].Y, monRectList[i].Width, monRectList[i].Height);
                 }
 
             }

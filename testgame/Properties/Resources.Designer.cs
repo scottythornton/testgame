@@ -80,6 +80,16 @@ namespace testgame.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap fortnite_default {
+            get {
+                object obj = ResourceManager.GetObject("fortnite_default", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         internal static byte[] GameSystemServices {
@@ -105,6 +115,16 @@ namespace testgame.Properties {
         internal static System.Drawing.Bitmap red_50x50 {
             get {
                 object obj = ResourceManager.GetObject("red_50x50", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap shrek_monsters {
+            get {
+                object obj = ResourceManager.GetObject("shrek_monsters", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
