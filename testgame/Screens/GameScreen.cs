@@ -312,7 +312,7 @@ namespace testgame
             if (startTimer > 50)
             {
                 //draw rectangle to screen
-                e.Graphics.FillRectangle(heroBrush, heroX, heroY, heroSize, heroSize);
+                e.Graphics.DrawImage(Properties.Resources.fortnite_default, heroX, heroY, heroSize, heroSize);
                 e.Graphics.DrawLine(linePen, 50, 0, 50, this.Height);
                 e.Graphics.DrawString("Score: " + score, scoreFont, scoreBrush, 1, 10);
 
@@ -325,11 +325,10 @@ namespace testgame
                 {
                     e.Graphics.DrawImage(Properties.Resources.shrek_monsters, monRectList[i].X, monRectList[i].Y, monRectList[i].Width, monRectList[i].Height);
                 }
-
             }
             else
             {
-                e.Graphics.FillRectangle(heroBrush, heroX, heroY, heroSize, heroSize);
+                e.Graphics.DrawImage(Properties.Resources.fortnite_default, heroX, heroY, heroSize, heroSpeed); 
                 e.Graphics.DrawLine(linePen, 50, 0, 50, this.Height);
                 e.Graphics.DrawString("Level : " + level, drawFont, heroBrush, this.Width / 2 - 45, this.Height / 2 - 30);
                 e.Graphics.DrawString("Score: " + score, scoreFont, scoreBrush, 1, 10);
